@@ -1,0 +1,1 @@
+export { ThemedLayoutV2 } from "./ThemedLayout";
