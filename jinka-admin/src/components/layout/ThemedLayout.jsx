@@ -18,10 +18,9 @@ import {
     GlobalOutlined,
     MenuFoldOutlined,
     MenuUnfoldOutlined,
-    PhoneOutlined,
-    MailOutlined,
 } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 import "./style.css";
 
 const { Header, Sider, Content } = Layout;
@@ -29,18 +28,15 @@ const { Text } = Typography;
 
 export const ThemedLayoutV2 = ({ children }) => {
     const [collapsed, setCollapsed] = useState(false);
-    const [language, setLanguage] = useState("en");
     const [notificationDrawer, setNotificationDrawer] = useState(false);
-    const navigate = useNavigate();
-    const location = useLocation();
-
-    const notifications = [
+    const [notifications, setNotifications] = useState([
         {
             id: 1,
             title: "New citizen registration",
             description: "A new citizen has been registered in the system",
             time: "5 minutes ago",
             type: "info",
+            read: false,
         },
         {
             id: 2,
@@ -48,6 +44,7 @@ export const ThemedLayoutV2 = ({ children }) => {
             description: "Building permit #12345 has been approved",
             time: "1 hour ago",
             type: "success",
+            read: false,
         },
         {
             id: 3,
@@ -55,6 +52,7 @@ export const ThemedLayoutV2 = ({ children }) => {
             description: "System maintenance is scheduled for tonight at 2 AM",
             time: "3 hours ago",
             type: "warning",
+            read: false,
         },
         {
             id: 4,
@@ -62,6 +60,7 @@ export const ThemedLayoutV2 = ({ children }) => {
             description: "City Council Meeting announcement has been published",
             time: "5 hours ago",
             type: "info",
+            read: false,
         },
         {
             id: 5,
@@ -69,69 +68,85 @@ export const ThemedLayoutV2 = ({ children }) => {
             description: "Monthly budget report has been submitted",
             time: "1 day ago",
             type: "success",
+            read: false,
         },
-    ];
+    ]);
+    const { t, i18n } = useTranslation();
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const changeLanguage = (lng) => {
+        i18n.changeLanguage(lng);
+    };
+
+    const handleClearAll = () => {
+        setNotifications([]);
+    };
+
+    const handleRemoveNotification = (id) => {
+        setNotifications(notifications.filter(n => n.id !== id));
+    };
 
     const menuItems = [
         {
             key: "/",
             icon: <DashboardOutlined />,
-            label: "Dashboard",
+            label: t('menu.dashboard'),
         },
         {
             key: "/departments",
             icon: <BankOutlined />,
-            label: "Departments",
+            label: t('menu.departments'),
         },
         {
             key: "/citizens",
             icon: <TeamOutlined />,
-            label: "Citizens",
+            label: t('menu.citizens'),
         },
         {
             key: "/announcements",
             icon: <NotificationOutlined />,
-            label: "Announcements",
+            label: t('menu.announcements'),
             children: [
                 {
                     key: "/announcements",
-                    label: "View Announcements",
+                    label: t('announcements.title'),
                 },
                 {
                     key: "/announcements/create",
-                    label: "Create Announcement",
+                    label: t('announcements.create'),
                 },
             ],
         },
         {
             key: "/projects",
             icon: <ProjectOutlined />,
-            label: "Projects",
+            label: t('menu.projects'),
         },
         {
             key: "/events",
             icon: <CalendarOutlined />,
-            label: "Events",
+            label: t('menu.events'),
         },
         {
             key: "/documents",
             icon: <FileTextOutlined />,
-            label: "Documents",
+            label: t('menu.documents'),
         },
         {
             key: "/reports",
             icon: <BarChartOutlined />,
-            label: "Reports",
+            label: t('menu.reports'),
         },
         {
             key: "/messages",
             icon: <MessageOutlined />,
-            label: "Messages",
+            label: t('menu.messages'),
         },
         {
             key: "/settings",
             icon: <SettingOutlined />,
-            label: "Settings",
+            label: t('menu.settings'),
         },
     ];
 
@@ -161,10 +176,17 @@ export const ThemedLayoutV2 = ({ children }) => {
         {
             key: "en",
             label: "English",
+            onClick: () => changeLanguage('en'),
         },
         {
             key: "am",
-            label: "አማርኛ",
+            label: "አማርኛ (Amharic)",
+            onClick: () => changeLanguage('am'),
+        },
+        {
+            key: "or",
+            label: "Afaan Oromoo (Oromo)",
+            onClick: () => changeLanguage('or'),
         },
     ];
 
@@ -181,7 +203,7 @@ export const ThemedLayoutV2 = ({ children }) => {
     };
 
     const handleLanguageChange = ({ key }) => {
-        setLanguage(key);
+        changeLanguage(key);
     };
 
     return (
@@ -202,8 +224,8 @@ export const ThemedLayoutV2 = ({ children }) => {
                     </div>
                     {!collapsed && (
                         <div className="logo-text">
-                            <div className="logo-title">Jinka City</div>
-                            <div className="logo-subtitle">ጅንካ ከተማ አስተዳደር</div>
+                            <div className="logo-title">{t('app.title')}</div>
+                            <div className="logo-subtitle">{t('app.subtitle')}</div>
                         </div>
                     )}
                 </div>
@@ -226,7 +248,7 @@ export const ThemedLayoutV2 = ({ children }) => {
                             icon={<UserOutlined />}
                         />
                         <div className="user-info">
-                            <div className="user-name">Admin User</div>
+                            <div className="user-name">{t('header.profile')}</div>
                             <div className="user-email">admin@jinka.gov.et</div>
                         </div>
                     </div>
@@ -244,15 +266,15 @@ export const ThemedLayoutV2 = ({ children }) => {
                         />
                         <div className="header-branding">
                             <div className="header-title">
-                                <div>Jinka City</div>
-                                <div>Administration</div>
+                                <div>{t('app.title')}</div>
+                                <div>{t('app.subtitle')}</div>
                             </div>
                         </div>
                     </div>
 
                     <div className="header-right">
                         <Input
-                            placeholder="Search anything..."
+                            placeholder={t('header.search')}
                             prefix={<SearchOutlined style={{ color: "#1e5a8e" }} />}
                             className="header-search"
                             style={{ width: 350 }}
@@ -262,19 +284,21 @@ export const ThemedLayoutV2 = ({ children }) => {
                             menu={{
                                 items: languageMenuItems,
                                 onClick: handleLanguageChange,
-                                selectedKeys: [language],
+                                selectedKeys: [i18n.language],
                             }}
                             placement="bottomRight"
                         >
                             <Button className="language-btn">
                                 <GlobalOutlined />
-                                <span>{language === "en" ? "EN" : "አማ"}</span>
+                                <span>
+                                    {i18n.language === "en" ? "EN" : i18n.language === "am" ? "አማ" : "OR"}
+                                </span>
                             </Button>
                         </Dropdown>
 
                         <div className="header-divider"></div>
 
-                        <Badge count={5} size="default" offset={[-3, 3]}>
+                        <Badge count={notifications.length} size="default" offset={[-3, 3]}>
                             <Button
                                 type="text"
                                 icon={<BellOutlined />}
@@ -302,8 +326,8 @@ export const ThemedLayoutV2 = ({ children }) => {
                                     icon={<UserOutlined />}
                                 />
                                 <div className="user-dropdown-info">
-                                    <div className="user-dropdown-name">Admin</div>
-                                    <div className="user-dropdown-role">User</div>
+                                    <div className="user-dropdown-name">{t('header.profile')}</div>
+                                    <div className="user-dropdown-role">{t('header.user')}</div>
                                 </div>
                             </div>
                         </Dropdown>
@@ -313,7 +337,7 @@ export const ThemedLayoutV2 = ({ children }) => {
                 <Content className="custom-content">{children}</Content>
 
                 <Drawer
-                    title="Notifications"
+                    title={t('header.notifications')}
                     placement="right"
                     onClose={() => setNotificationDrawer(false)}
                     open={notificationDrawer}

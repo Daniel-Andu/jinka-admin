@@ -9,19 +9,21 @@ import {
     UserOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 export const CitizenList = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const columns = [
         {
-            title: "Citizen ID",
+            title: t('citizens.id'),
             dataIndex: "id",
             key: "id",
             width: 120,
         },
         {
-            title: "Name",
+            title: t('citizens.name'),
             dataIndex: "name",
             key: "name",
             render: (text, record) => (
@@ -32,22 +34,22 @@ export const CitizenList = () => {
             ),
         },
         {
-            title: "Phone",
+            title: t('citizens.phone'),
             dataIndex: "phone",
             key: "phone",
         },
         {
-            title: "Email",
+            title: t('citizens.email'),
             dataIndex: "email",
             key: "email",
         },
         {
-            title: "Department",
+            title: t('citizens.department'),
             dataIndex: "department",
             key: "department",
         },
         {
-            title: "Status",
+            title: t('citizens.status'),
             dataIndex: "status",
             key: "status",
             render: (status) => (
@@ -55,7 +57,7 @@ export const CitizenList = () => {
             ),
         },
         {
-            title: "Actions",
+            title: t('citizens.actions'),
             key: "actions",
             render: (_, record) => (
                 <Space>
@@ -105,13 +107,13 @@ export const CitizenList = () => {
     return (
         <div>
             <div className="page-header">
-                <h1>Citizens Management</h1>
+                <h1>{t('citizens.title')}</h1>
             </div>
 
             <Card bordered={false} style={{ borderRadius: 12 }}>
                 <Space style={{ marginBottom: 16, width: "100%", justifyContent: "space-between" }}>
                     <Input
-                        placeholder="Search citizens..."
+                        placeholder={t('citizens.search')}
                         prefix={<SearchOutlined />}
                         style={{ width: 300 }}
                     />
@@ -120,7 +122,7 @@ export const CitizenList = () => {
                         icon={<PlusOutlined />}
                         onClick={() => navigate("/citizens/create")}
                     >
-                        Add Citizen
+                        {t('citizens.add')}
                     </Button>
                 </Space>
 

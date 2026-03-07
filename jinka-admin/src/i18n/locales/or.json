@@ -1,0 +1,119 @@
+{
+    "app": {
+        "title": "Magaalaa Jinkaa",
+        "subtitle": "Bulchiinsa"
+    },
+    "menu": {
+        "dashboard": "Gabatee",
+        "departments": "Kutaalee",
+        "citizens": "Lammilee",
+        "announcements": "Beeksisalee",
+        "projects": "Pirojektilee",
+        "events": "Taateewwan",
+        "documents": "Galmee",
+        "reports": "Gabaasalee",
+        "messages": "Ergalee",
+        "settings": "Qindaa'ina"
+    },
+    "header": {
+        "search": "Barbaadi...",
+        "notifications": "Beeksisalee",
+        "profile": "Bulchaa",
+        "user": "Fayyadamaa"
+    },
+    "dashboard": {
+        "title": "Ilaalcha Waliigalaa Gabatee",
+        "welcome": "Baga nagaan dhuftan, wanti Bulchiinsa Magaalaa Jinkaa keessatti mul'atu kunoo",
+        "totalCitizens": "Lammilee Waliigalaa",
+        "activeDepartments": "Kutaalee Socho'oo",
+        "pendingRequests": "Gaaffilee Eegaa Jiran",
+        "monthlyRevenue": "Galii Ji'aa",
+        "recentActivities": "Sochiilee Dhiyoo",
+        "quickStats": "Istaatistiksii Saffisaa",
+        "systemStatus": "Haala Sirna"
+    },
+    "citizens": {
+        "title": "Bulchiinsa Lammilee",
+        "add": "Lammii Dabaluu",
+        "search": "Lammilee barbaadi...",
+        "id": "Eenyummaa Lammii",
+        "name": "Maqaa",
+        "phone": "Bilbilaa",
+        "email": "Imeelii",
+        "department": "Kutaa",
+        "status": "Haala",
+        "actions": "Gocha"
+    },
+    "departments": {
+        "title": "Kutaalee",
+        "add": "Kutaa Dabaluu",
+        "search": "Kutaalee barbaadi...",
+        "name": "Kutaa",
+        "head": "Hogganaa",
+        "employees": "Hojjettootaa",
+        "contact": "Quunnamtii",
+        "status": "Haala",
+        "actions": "Gocha"
+    },
+    "announcements": {
+        "title": "Beeksisalee",
+        "create": "Beeksisa Uumuu",
+        "search": "Beeksisalee barbaadi...",
+        "titleField": "Mata-duree",
+        "category": "Ramaddii",
+        "date": "Guyyaa",
+        "status": "Haala",
+        "actions": "Gocha"
+    },
+    "projects": {
+        "title": "Pirojektilee",
+        "new": "Pirojektii Haaraa",
+        "budget": "Baajata",
+        "deadline": "Guyyaa Xumuraa",
+        "progress": "Guddina"
+    },
+    "events": {
+        "title": "Kaaleendara Taateewwanii",
+        "add": "Taatee Dabaluu"
+    },
+    "documents": {
+        "title": "Galmee",
+        "upload": "Galmee Ol-kaa'uu",
+        "search": "Galmee barbaadi...",
+        "name": "Galmee",
+        "category": "Ramaddii",
+        "size": "Hamma",
+        "uploaded": "Ol-ka'e",
+        "uploadedBy": "Kan Ol-kaa'e",
+        "actions": "Gocha"
+    },
+    "reports": {
+        "title": "Gabaasalee fi Xiinxala",
+        "export": "Gadi Baasuu",
+        "print": "Maxxansuu"
+    },
+    "messages": {
+        "title": "Ergalee",
+        "search": "Ergalee barbaadi..."
+    },
+    "settings": {
+        "title": "Qindaa'ina",
+        "profile": "Qindaa'ina Piroofaayilii",
+        "security": "Qindaa'ina Nageenyaa",
+        "notifications": "Qindaa'ina Beeksisaa",
+        "system": "Qindaa'ina Sirna"
+    },
+    "common": {
+        "save": "Olkaa'i",
+        "cancel": "Dhiisi",
+        "delete": "Haqi",
+        "edit": "Gulaali",
+        "view": "Ilaali",
+        "create": "Uumi",
+        "update": "Haaromsi",
+        "close": "Cufi",
+        "submit": "Galchi",
+        "loading": "Fe'aa jira...",
+        "noData": "Odeeffannoon hin jiru"
+    }
+}

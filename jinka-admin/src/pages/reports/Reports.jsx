@@ -6,8 +6,10 @@ import {
     ArrowUpOutlined,
     ArrowDownOutlined,
 } from "@ant-design/icons";
+import { useTranslation } from 'react-i18next';
 
 export const ReportList = () => {
+    const { t } = useTranslation();
     const handleExport = () => {
         message.success("Report exported successfully! (This will be connected to your API)");
     };
@@ -19,7 +21,7 @@ export const ReportList = () => {
     return (
         <div>
             <div className="page-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <h1>Reports & Analytics</h1>
+                <h1>{t('reports.title')}</h1>
                 <Space>
                     <Select defaultValue="month" style={{ width: 150 }} size="large">
                         <Select.Option value="week">This Week</Select.Option>
@@ -28,10 +30,10 @@ export const ReportList = () => {
                         <Select.Option value="year">This Year</Select.Option>
                     </Select>
                     <Button icon={<PrinterOutlined />} size="large" onClick={handlePrint}>
-                        Print
+                        {t('reports.print')}
                     </Button>
                     <Button type="primary" icon={<DownloadOutlined />} size="large" onClick={handleExport}>
-                        Export
+                        {t('reports.export')}
                     </Button>
                 </Space>
             </div>

@@ -11,13 +11,15 @@ import {
     WarningOutlined,
 } from "@ant-design/icons";
 import dayjs from "dayjs";
+import { useTranslation } from 'react-i18next';
 
 const { Title, Text } = Typography;
 
 export const Dashboard = () => {
+    const { t } = useTranslation();
     const stats = [
         {
-            title: "Total Citizens",
+            title: t('dashboard.totalCitizens'),
             value: "124,856",
             change: "+2.5% from last month",
             changeType: "positive",
@@ -25,7 +27,7 @@ export const Dashboard = () => {
             color: "blue",
         },
         {
-            title: "Active Departments",
+            title: t('dashboard.activeDepartments'),
             value: "24",
             change: "All operational",
             changeType: "neutral",
@@ -33,7 +35,7 @@ export const Dashboard = () => {
             color: "green",
         },
         {
-            title: "Pending Requests",
+            title: t('dashboard.pendingRequests'),
             value: "342",
             change: "-12% from yesterday",
             changeType: "positive",
@@ -41,7 +43,7 @@ export const Dashboard = () => {
             color: "orange",
         },
         {
-            title: "Monthly Revenue",
+            title: t('dashboard.monthlyRevenue'),
             value: "2.4M ETB",
             change: "+8.2% from last month",
             changeType: "positive",
@@ -98,10 +100,10 @@ export const Dashboard = () => {
             {/* Dashboard Header */}
             <div className="dashboard-header">
                 <Title level={2} style={{ color: "white", marginBottom: 8 }}>
-                    Dashboard Overview
+                    {t('dashboard.title')}
                 </Title>
                 <Text style={{ color: "rgba(255, 255, 255, 0.9)", fontSize: 16 }}>
-                    Welcome back, here's what's happening in Jinka City Administration
+                    {t('dashboard.welcome')}
                 </Text>
                 <div className="date" style={{ marginTop: 12 }}>
                     <CalendarOutlined />
@@ -138,7 +140,7 @@ export const Dashboard = () => {
                         title={
                             <Space>
                                 <CalendarOutlined />
-                                <span>Recent Activities</span>
+                                <span>{t('dashboard.recentActivities')}</span>
                             </Space>
                         }
                         extra={
@@ -168,7 +170,7 @@ export const Dashboard = () => {
 
                 <Col xs={24} lg={8}>
                     <Card
-                        title="Quick Stats"
+                        title={t('dashboard.quickStats')}
                         bordered={false}
                         style={{ borderRadius: 12, marginBottom: 24 }}
                     >
@@ -198,7 +200,7 @@ export const Dashboard = () => {
                     </Card>
 
                     <Card
-                        title="System Status"
+                        title={t('dashboard.systemStatus')}
                         bordered={false}
                         style={{ borderRadius: 12 }}
                     >
