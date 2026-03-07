@@ -337,45 +337,85 @@ export const ThemedLayoutV2 = ({ children }) => {
                 <Content className="custom-content">{children}</Content>
 
                 <Drawer
-                    title={t('header.notifications')}
+                    title={
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                            <span>{t('header.notifications')}</span>
+                            {notifications.length > 0 && (
+                                <Button type="link" onClick={handleClearAll} style={{ padding: 0 }}>
+                                    Clear All
+                                </Button>
+                            )}
+                        </div>
+                    }
                     placement="right"
                     onClose={() => setNotificationDrawer(false)}
                     open={notificationDrawer}
                     width={400}
                 >
-                    <List
-                        dataSource={notifications}
-                        renderItem={(item) => (
-                            <List.Item style={{ borderBottom: "1px solid #f0f0f0", padding: "16px 0" }}>
-                                <List.Item.Meta
-                                    avatar={
-                                        <Avatar
-                                            style={{
-                                                backgroundColor:
-                                                    item.type === "success"
-                                                        ? "#0d9488"
-                                                        : item.type === "warning"
-                                                            ? "#f59e0b"
-                                                            : "#1e5a8e",
-                                            }}
-                                            icon={<BellOutlined />}
-                                        />
-                                    }
-                                    title={<Text strong>{item.title}</Text>}
-                                    description={
-                                        <>
-                                            <Text type="secondary" style={{ display: "block", marginBottom: 4 }}>
-                                                {item.description}
-                                            </Text>
-                                            <Text type="secondary" style={{ fontSize: 12 }}>
-                                                {item.time}
-                                            </Text>
-                                        </>
-                                    }
-                                />
-                            </List.Item>
-                        )}
-                    />
+                    {notifications.length === 0 ? (
+                        <div style={{ textAlign: "center", padding: "40px 0", color: "#6b7280" }}>
+                            <BellOutlined style={{ fontSize: 48, marginBottom: 16, opacity: 0.3 }} />
+                            <div>No notifications</div>
+                        </div>
+                    ) : (
+                        <List
+                            dataSource={notifications}
+                            renderItem={(item) => (
+                                <List.Item
+                                    style={{
+                                        borderBottom: "1px solid #f0f0f0",
+                                        padding: "16px 0",
+                                        position: "relative",
+                                        cursor: "pointer"
+                                    }}
+                                >
+                                    <List.Item.Meta
+                                        avatar={
+                                            <Avatar
+                                                style={{
+                                                    backgroundColor:
+                                                        item.type === "success"
+                                                            ? "#0d9488"
+                                                            : item.type === "warning"
+                                                                ? "#f59e0b"
+                                                                : "#1e5a8e",
+                                                }}
+                                                icon={<BellOutlined />}
+                                            />
+                                        }
+                                        title={<Text strong>{item.title}</Text>}
+                                        description={
+                                            <>
+                                                <Text type="secondary" style={{ display: "block", marginBottom: 4 }}>
+                                                    {item.description}
+                                                </Text>
+                                                <Text type="secondary" style={{ fontSize: 12 }}>
+                                                    {item.time}
+                                                </Text>
+                                            </>
+                                        }
+                                    />
+                                    <Button
+                                        type="text"
+                                        size="small"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleRemoveNotification(item.id);
+                                        }}
+                                        style={{
+                                            position: "absolute",
+                                            top: 16,
+                                            right: 0,
+                                            fontSize: 16,
+                                            color: "#6b7280"
+                                        }}
+                                    >
+                                        ×
+                                    </Button>
+                                </List.Item>
+                            )}
+                        />
+                    )}
                 </Drawer>
             </Layout>
         </Layout>

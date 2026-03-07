@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 export const DepartmentList = () => {
     const navigate = useNavigate();
+    const [searchText, setSearchText] = React.useState("");
 
     const columns = [
         {
@@ -104,6 +105,12 @@ export const DepartmentList = () => {
         },
     ];
 
+    const filteredData = data.filter(item =>
+        item.name.toLowerCase().includes(searchText.toLowerCase()) ||
+        item.head.toLowerCase().includes(searchText.toLowerCase()) ||
+        item.contact.includes(searchText)
+    );
+
     return (
         <div>
             <div className="page-header">
@@ -116,6 +123,9 @@ export const DepartmentList = () => {
                         placeholder="Search departments..."
                         prefix={<SearchOutlined />}
                         style={{ width: 300 }}
+                        value={searchText}
+                        onChange={(e) => setSearchText(e.target.value)}
+                        allowClear
                     />
                     <Button
                         type="primary"
@@ -128,7 +138,7 @@ export const DepartmentList = () => {
 
                 <Table
                     columns={columns}
-                    dataSource={data}
+                    dataSource={filteredData}
                     rowKey="id"
                     pagination={{
                         pageSize: 10,

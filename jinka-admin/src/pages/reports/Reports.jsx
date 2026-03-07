@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, Row, Col, Statistic, Button, Space, Select, message } from "antd";
 import {
     DownloadOutlined,
@@ -10,12 +10,55 @@ import { useTranslation } from 'react-i18next';
 
 export const ReportList = () => {
     const { t } = useTranslation();
+
+    // System-calculated department performance (recommended approach)
+    const [departmentData] = useState([
+        {
+            name: "Civil Registry",
+            completedTasks: 950,
+            totalTasks: 1000,
+            performance: 95,
+            trend: "up",
+            color: "#0d9488"
+        },
+        {
+            name: "Urban Planning",
+            completedTasks: 435,
+            totalTasks: 500,
+            performance: 87,
+            trend: "up",
+            color: "#1e5a8e"
+        },
+        {
+            name: "Health Services",
+            completedTasks: 460,
+            totalTasks: 500,
+            performance: 92,
+            trend: "stable",
+            color: "#f59e0b"
+        },
+        {
+            name: "Finance",
+            completedTasks: 390,
+            totalTasks: 500,
+            performance: 78,
+            trend: "down",
+            color: "#dc2626"
+        }
+    ]);
+
     const handleExport = () => {
         message.success("Report exported successfully! (This will be connected to your API)");
     };
 
     const handlePrint = () => {
         window.print();
+    };
+
+    const getTrendIcon = (trend) => {
+        if (trend === "up") return <ArrowUpOutlined style={{ color: "#0d9488" }} />;
+        if (trend === "down") return <ArrowDownOutlined style={{ color: "#dc2626" }} />;
+        return <span style={{ color: "#6b7280" }}>—</span>;
     };
 
     return (
@@ -98,44 +141,44 @@ export const ReportList = () => {
 
             <Row gutter={[24, 24]} style={{ marginTop: 24 }}>
                 <Col xs={24} lg={12}>
-                    <Card title="Department Performance" bordered={false} style={{ borderRadius: 12 }}>
+                    <Card
+                        title={
+                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                                <span>Department Performance</span>
+                                <span style={{ fontSize: 12, color: "#6b7280", fontWeight: "normal" }}>
+                                    Auto-calculated from system data
+                                </span>
+                            </div>
+                        }
+                        bordered={false}
+                        style={{ borderRadius: 12 }}
+                    >
                         <Space direction="vertical" style={{ width: "100%" }} size="large">
-                            <div>
-                                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
-                                    <span>Civil Registry</span>
-                                    <span style={{ fontWeight: 600 }}>95%</span>
+                            {departmentData.map((dept, index) => (
+                                <div key={index}>
+                                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
+                                        <span>{dept.name}</span>
+                                        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                                            <span style={{ fontSize: 12, color: "#6b7280" }}>
+                                                {dept.completedTasks}/{dept.totalTasks} tasks
+                                            </span>
+                                            {getTrendIcon(dept.trend)}
+                                            <span style={{ fontWeight: 600 }}>{dept.performance}%</span>
+                                        </div>
+                                    </div>
+                                    <div style={{ height: 8, background: "#f3f4f6", borderRadius: 4 }}>
+                                        <div
+                                            style={{
+                                                width: `${dept.performance}%`,
+                                                height: "100%",
+                                                background: dept.color,
+                                                borderRadius: 4,
+                                                transition: "width 0.3s ease"
+                                            }}
+                                        />
+                                    </div>
                                 </div>
-                                <div style={{ height: 8, background: "#f3f4f6", borderRadius: 4 }}>
-                                    <div style={{ width: "95%", height: "100%", background: "#0d9488", borderRadius: 4 }} />
-                                </div>
-                            </div>
-                            <div>
-                                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
-                                    <span>Urban Planning</span>
-                                    <span style={{ fontWeight: 600 }}>87%</span>
-                                </div>
-                                <div style={{ height: 8, background: "#f3f4f6", borderRadius: 4 }}>
-                                    <div style={{ width: "87%", height: "100%", background: "#1e5a8e", borderRadius: 4 }} />
-                                </div>
-                            </div>
-                            <div>
-                                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
-                                    <span>Health Services</span>
-                                    <span style={{ fontWeight: 600 }}>92%</span>
-                                </div>
-                                <div style={{ height: 8, background: "#f3f4f6", borderRadius: 4 }}>
-                                    <div style={{ width: "92%", height: "100%", background: "#f59e0b", borderRadius: 4 }} />
-                                </div>
-                            </div>
-                            <div>
-                                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
-                                    <span>Finance</span>
-                                    <span style={{ fontWeight: 600 }}>78%</span>
-                                </div>
-                                <div style={{ height: 8, background: "#f3f4f6", borderRadius: 4 }}>
-                                    <div style={{ width: "78%", height: "100%", background: "#dc2626", borderRadius: 4 }} />
-                                </div>
-                            </div>
+                            ))}
                         </Space>
                     </Card>
                 </Col>

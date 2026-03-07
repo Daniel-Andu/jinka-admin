@@ -6,54 +6,75 @@ import dayjs from "dayjs";
 export const EventList = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [form] = Form.useForm();
+    const [events, setEvents] = useState([
+        {
+            id: 1,
+            date: dayjs().date(10),
+            type: "success",
+            title: "City Council Meeting",
+            description: "Monthly city council meeting to discuss budget and projects",
+            location: "City Hall, Main Conference Room",
+        },
+        {
+            id: 2,
+            date: dayjs().date(15),
+            type: "warning",
+            title: "Budget Review",
+            description: "Quarterly budget review with department heads",
+            location: "Finance Department",
+        },
+        {
+            id: 3,
+            date: dayjs().date(20),
+            type: "error",
+            title: "Emergency Drill",
+            description: "City-wide emergency response drill",
+            location: "All Departments",
+        },
+    ]);
 
     const showModal = () => {
         setIsModalOpen(true);
     };
 
+    const handleCancel = () => {
+        setIsModalOpen(false);
+        form.resetFields();
+    };
+
     const handleOk = () => {
         form.validateFields().then((values) => {
-            console.log("Event data:", values);
-            message.success("Event added successfully! (This will be connected to your API)");
-            form.resetFields();
+            const newEvent = {
+                id: events.length + 1,
+                date: values.date,
+                type: values.type === "meeting" ? "success" : values.type === "emergency" ? "error" : "warning",
+                title: values.title,
+                description: values.description || "",
+                location: values.location || "",
+            };
+            setEvents([...events, newEvent]);
             setIsModalOpen(false);
+            form.resetFields();
+            message.success("Event added successfully!");
+        }).catch((error) => {
+            console.error("Validation failed:", error);
         });
     };
 
-    const handleCancel = () => {
-        form.resetFields();
-        setIsModalOpen(false);
-    };
-
-    const getListData = (value) => {
-        let listData = [];
-
-        if (value.date() === 10) {
-            listData = [
-                { type: "success", content: "City Council Meeting" },
-            ];
-        }
-        if (value.date() === 15) {
-            listData = [
-                { type: "warning", content: "Budget Review" },
-            ];
-        }
-        if (value.date() === 20) {
-            listData = [
-                { type: "error", content: "Emergency Drill" },
-            ];
-        }
-
-        return listData || [];
-    };
-
     const dateCellRender = (value) => {
-        const listData = getListData(value);
+        const dayEvents = events.filter(event =>
+            dayjs(event.date).isSame(value, 'day')
+        );
+
         return (
             <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-                {listData.map((item, index) => (
-                    <li key={index} style={{ marginBottom: 4 }}>
-                        <Badge status={item.type} text={item.content} style={{ fontSize: 12 }} />
+                {dayEvents.map((event) => (
+                    <li key={event.id} style={{ marginBottom: 4 }}>
+                        <Badge
+                            status={event.type}
+                            text={event.title}
+                            style={{ fontSize: 12 }}
+                        />
                     </li>
                 ))}
             </ul>
@@ -69,7 +90,7 @@ export const EventList = () => {
                 </Button>
             </div>
 
-            <Card bordered={false} style={{ borderRadius: 12, boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}>
+            <Card style={{ borderRadius: 12, boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}>
                 <Calendar
                     cellRender={dateCellRender}
                     style={{ padding: "16px" }}

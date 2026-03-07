@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 export const CitizenList = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const [searchText, setSearchText] = React.useState("");
 
     const columns = [
         {
@@ -104,6 +105,14 @@ export const CitizenList = () => {
         },
     ];
 
+    const filteredData = data.filter(item =>
+        item.name.toLowerCase().includes(searchText.toLowerCase()) ||
+        item.email.toLowerCase().includes(searchText.toLowerCase()) ||
+        item.phone.includes(searchText) ||
+        item.department.toLowerCase().includes(searchText.toLowerCase()) ||
+        item.id.toLowerCase().includes(searchText.toLowerCase())
+    );
+
     return (
         <div>
             <div className="page-header">
@@ -116,6 +125,9 @@ export const CitizenList = () => {
                         placeholder={t('citizens.search')}
                         prefix={<SearchOutlined />}
                         style={{ width: 300 }}
+                        value={searchText}
+                        onChange={(e) => setSearchText(e.target.value)}
+                        allowClear
                     />
                     <Button
                         type="primary"
@@ -128,7 +140,7 @@ export const CitizenList = () => {
 
                 <Table
                     columns={columns}
-                    dataSource={data}
+                    dataSource={filteredData}
                     rowKey="id"
                     pagination={{
                         pageSize: 10,
