@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Layout, Menu, Avatar, Dropdown, Badge, Input, Button, Space, Drawer, List, Typography } from "antd";
+import React, { useState, useEffect } from "react";
+import { Layout, Menu, Avatar, Dropdown, Badge, Input, Button, Space, Drawer, List, Typography, Modal } from "antd";
 import {
     DashboardOutlined,
     BankOutlined,
@@ -29,17 +29,12 @@ const { Text } = Typography;
 export const ThemedLayoutV2 = ({ children }) => {
     const [collapsed, setCollapsed] = useState(false);
     const [notificationDrawer, setNotificationDrawer] = useState(false);
+    const [notificationDetailModal, setNotificationDetailModal] = useState(false);
+    const [selectedNotification, setSelectedNotification] = useState(null);
+    const [profileImage, setProfileImage] = useState(null);
     const [notifications, setNotifications] = useState([
         {
             id: 1,
-            title: "New citizen registration",
-            description: "A new citizen has been registered in the system",
-            time: "5 minutes ago",
-            type: "info",
-            read: false,
-        },
-        {
-            id: 2,
             title: "Building permit approved",
             description: "Building permit #12345 has been approved",
             time: "1 hour ago",
@@ -47,7 +42,7 @@ export const ThemedLayoutV2 = ({ children }) => {
             read: false,
         },
         {
-            id: 3,
+            id: 2,
             title: "System maintenance scheduled",
             description: "System maintenance is scheduled for tonight at 2 AM",
             time: "3 hours ago",
@@ -55,7 +50,7 @@ export const ThemedLayoutV2 = ({ children }) => {
             read: false,
         },
         {
-            id: 4,
+            id: 3,
             title: "New announcement published",
             description: "City Council Meeting announcement has been published",
             time: "5 hours ago",
@@ -63,7 +58,7 @@ export const ThemedLayoutV2 = ({ children }) => {
             read: false,
         },
         {
-            id: 5,
+            id: 4,
             title: "Budget report submitted",
             description: "Monthly budget report has been submitted",
             time: "1 day ago",
@@ -74,6 +69,25 @@ export const ThemedLayoutV2 = ({ children }) => {
     const { t, i18n } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
+
+    useEffect(() => {
+        // Load profile image from localStorage
+        const savedImage = localStorage.getItem('profileImage');
+        if (savedImage) {
+            setProfileImage(savedImage);
+        }
+
+        // Listen for profile image updates
+        const handleProfileImageUpdate = () => {
+            const updatedImage = localStorage.getItem('profileImage');
+            setProfileImage(updatedImage);
+        };
+
+        window.addEventListener('profileImageUpdated', handleProfileImageUpdate);
+        return () => {
+            window.removeEventListener('profileImageUpdated', handleProfileImageUpdate);
+        };
+    }, []);
 
     const changeLanguage = (lng) => {
         i18n.changeLanguage(lng);
@@ -87,6 +101,11 @@ export const ThemedLayoutV2 = ({ children }) => {
         setNotifications(notifications.filter(n => n.id !== id));
     };
 
+    const handleNotificationClick = (notification) => {
+        setSelectedNotification(notification);
+        setNotificationDetailModal(true);
+    };
+
     const menuItems = [
         {
             key: "/",
@@ -97,11 +116,6 @@ export const ThemedLayoutV2 = ({ children }) => {
             key: "/departments",
             icon: <BankOutlined />,
             label: t('menu.departments'),
-        },
-        {
-            key: "/citizens",
-            icon: <TeamOutlined />,
-            label: t('menu.citizens'),
         },
         {
             key: "/announcements",
@@ -183,11 +197,6 @@ export const ThemedLayoutV2 = ({ children }) => {
             label: "አማርኛ (Amharic)",
             onClick: () => changeLanguage('am'),
         },
-        {
-            key: "or",
-            label: "Afaan Oromoo (Oromo)",
-            onClick: () => changeLanguage('or'),
-        },
     ];
 
     const handleMenuClick = ({ key }) => {
@@ -244,8 +253,9 @@ export const ThemedLayoutV2 = ({ children }) => {
                     <div className="sidebar-footer">
                         <Avatar
                             size={48}
-                            style={{ backgroundColor: "#0d9488", border: "2px solid rgba(255,255,255,0.2)" }}
-                            icon={<UserOutlined />}
+                            src={profileImage}
+                            style={{ backgroundColor: profileImage ? "transparent" : "#0d9488", border: "2px solid rgba(255,255,255,0.2)" }}
+                            icon={!profileImage && <UserOutlined />}
                         />
                         <div className="user-info">
                             <div className="user-name">{t('header.profile')}</div>
@@ -291,7 +301,7 @@ export const ThemedLayoutV2 = ({ children }) => {
                             <Button className="language-btn">
                                 <GlobalOutlined />
                                 <span>
-                                    {i18n.language === "en" ? "EN" : i18n.language === "am" ? "አማ" : "OR"}
+                                    {i18n.language === "en" ? "EN" : "አማ"}
                                 </span>
                             </Button>
                         </Dropdown>
@@ -319,11 +329,12 @@ export const ThemedLayoutV2 = ({ children }) => {
                             <div className="user-dropdown">
                                 <Avatar
                                     size={40}
+                                    src={profileImage}
                                     style={{
-                                        backgroundColor: "#0d9488",
+                                        backgroundColor: profileImage ? "transparent" : "#0d9488",
                                         border: "2px solid #e5e7eb"
                                     }}
-                                    icon={<UserOutlined />}
+                                    icon={!profileImage && <UserOutlined />}
                                 />
                                 <div className="user-dropdown-info">
                                     <div className="user-dropdown-name">{t('header.profile')}</div>
@@ -368,6 +379,7 @@ export const ThemedLayoutV2 = ({ children }) => {
                                         position: "relative",
                                         cursor: "pointer"
                                     }}
+                                    onClick={() => handleNotificationClick(item)}
                                 >
                                     <List.Item.Meta
                                         avatar={
@@ -417,6 +429,58 @@ export const ThemedLayoutV2 = ({ children }) => {
                         />
                     )}
                 </Drawer>
+
+                {/* Notification Detail Modal */}
+                <Modal
+                    title="Notification Details"
+                    open={notificationDetailModal}
+                    onCancel={() => setNotificationDetailModal(false)}
+                    footer={[
+                        <Button key="close" type="primary" onClick={() => setNotificationDetailModal(false)}>
+                            Close
+                        </Button>
+                    ]}
+                    width={600}
+                >
+                    {selectedNotification && (
+                        <div>
+                            <div style={{ marginBottom: 16 }}>
+                                <Avatar
+                                    size={48}
+                                    style={{
+                                        backgroundColor:
+                                            selectedNotification.type === "success"
+                                                ? "#0d9488"
+                                                : selectedNotification.type === "warning"
+                                                    ? "#f59e0b"
+                                                    : "#1e5a8e",
+                                        marginBottom: 16
+                                    }}
+                                    icon={<BellOutlined />}
+                                />
+                            </div>
+                            <div style={{ marginBottom: 8 }}>
+                                <Text strong style={{ fontSize: 18 }}>{selectedNotification.title}</Text>
+                            </div>
+                            <div style={{ marginBottom: 16 }}>
+                                <Text type="secondary" style={{ fontSize: 12 }}>{selectedNotification.time}</Text>
+                            </div>
+                            <div style={{ marginBottom: 16, lineHeight: 1.6 }}>
+                                <Text>{selectedNotification.description}</Text>
+                            </div>
+                            <div style={{
+                                padding: 12,
+                                background: "#f9fafb",
+                                borderRadius: 8,
+                                border: "1px solid #e5e7eb"
+                            }}>
+                                <Text type="secondary" style={{ fontSize: 13 }}>
+                                    Type: <Text strong>{selectedNotification.type}</Text>
+                                </Text>
+                            </div>
+                        </div>
+                    )}
+                </Modal>
             </Layout>
         </Layout>
     );

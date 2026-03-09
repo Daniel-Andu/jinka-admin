@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Card, Row, Col, Progress, Tag, Space, Button, Modal, Form, Input, InputNumber, DatePicker, message, Slider, Select } from "antd";
+import { Card, Row, Col, Progress, Tag, Space, Button, Modal, Form, Input, InputNumber, DatePicker, message, Slider, Select, Descriptions } from "antd";
 import { PlusOutlined, ProjectOutlined, EditOutlined } from "@ant-design/icons";
 
 export const ProjectList = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
     const [selectedProject, setSelectedProject] = useState(null);
     const [form] = Form.useForm();
     const [editForm] = Form.useForm();
@@ -84,6 +85,11 @@ export const ProjectList = () => {
             status: project.status,
         });
         setIsEditModalOpen(true);
+    };
+
+    const handleViewProject = (project) => {
+        setSelectedProject(project);
+        setIsDetailModalOpen(true);
     };
 
     const handleEditOk = () => {
@@ -185,14 +191,6 @@ export const ProjectList = () => {
                                 borderLeft: getBudgetAlertColor(project) ? `4px solid ${getBudgetAlertColor(project)}` : 'none'
                             }}
                             hoverable
-                            extra={
-                                <Button
-                                    type="text"
-                                    icon={<EditOutlined />}
-                                    onClick={() => handleEditProject(project)}
-                                    size="small"
-                                />
-                            }
                         >
                             <Space direction="vertical" style={{ width: "100%" }} size="middle">
                                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
@@ -221,9 +219,27 @@ export const ProjectList = () => {
                                     <div style={{ marginBottom: 4 }}>
                                         <strong>Deadline:</strong> {project.deadline}
                                     </div>
-                                    <div style={{ fontSize: 11, color: "#9ca3af" }}>
+                                    <div style={{ fontSize: 11, color: "#9ca3af", marginBottom: 12 }}>
                                         Last updated: {project.lastUpdated} by {project.updatedBy}
                                     </div>
+                                </div>
+                                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 4 }}>
+                                    <Button
+                                        type="default"
+                                        size="small"
+                                        onClick={() => handleViewProject(project)}
+                                        style={{ fontSize: 12, padding: "2px 12px", height: 28 }}
+                                    >
+                                        View
+                                    </Button>
+                                    <Button
+                                        type="primary"
+                                        size="small"
+                                        onClick={() => handleEditProject(project)}
+                                        style={{ fontSize: 12, padding: "2px 12px", height: 28 }}
+                                    >
+                                        Edit
+                                    </Button>
                                 </div>
                             </Space>
                         </Card>
@@ -319,6 +335,59 @@ export const ProjectList = () => {
                         </Select>
                     </Form.Item>
                 </Form>
+            </Modal>
+
+            {/* Project Detail Modal */}
+            <Modal
+                title="Project Details"
+                open={isDetailModalOpen}
+                onCancel={() => setIsDetailModalOpen(false)}
+                footer={[
+                    <Button key="close" onClick={() => setIsDetailModalOpen(false)}>
+                        Close
+                    </Button>
+                ]}
+                width={700}
+            >
+                {selectedProject && (
+                    <div>
+                        <Descriptions bordered column={1} size="middle">
+                            <Descriptions.Item label="Project Name">
+                                <strong style={{ fontSize: 16 }}>{selectedProject.name}</strong>
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Status">
+                                <Tag color="blue">{selectedProject.status}</Tag>
+                                {getBudgetAlert(selectedProject) && (
+                                    <Tag color="orange" style={{ marginLeft: 8 }}>Budget Alert</Tag>
+                                )}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Progress">
+                                <Progress percent={selectedProject.progress} status="active" strokeColor="#1e5a8e" />
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Budget">
+                                {selectedProject.budget}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Spent Amount">
+                                {formatCurrency(selectedProject.spentAmount)}
+                                <span style={{ color: getBudgetAlert(selectedProject) ? "#f59e0b" : "#0d9488", marginLeft: 8 }}>
+                                    ({Math.round((selectedProject.spentAmount / selectedProject.budgetAmount) * 100)}%)
+                                </span>
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Remaining Budget">
+                                {formatCurrency(selectedProject.budgetAmount - selectedProject.spentAmount)}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Deadline">
+                                {selectedProject.deadline}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Last Updated">
+                                {selectedProject.lastUpdated}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Updated By">
+                                {selectedProject.updatedBy}
+                            </Descriptions.Item>
+                        </Descriptions>
+                    </div>
+                )}
             </Modal>
         </div>
     );

@@ -16,7 +16,19 @@ const { Dragger } = Upload;
 
 export const DocumentList = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+    const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+    const [selectedDocument, setSelectedDocument] = useState(null);
     const [form] = Form.useForm();
+    const [categoryForm] = Form.useForm();
+    const [categories, setCategories] = useState([
+        "Finance",
+        "Planning",
+        "Statistics",
+        "Legal",
+        "HR",
+        "Operations"
+    ]);
 
     const showModal = () => {
         setIsModalOpen(true);
@@ -34,6 +46,33 @@ export const DocumentList = () => {
     const handleCancel = () => {
         form.resetFields();
         setIsModalOpen(false);
+    };
+
+    const handleAddCategory = () => {
+        categoryForm.validateFields().then((values) => {
+            if (!categories.includes(values.category)) {
+                setCategories([...categories, values.category]);
+                message.success("Category added successfully!");
+                categoryForm.resetFields();
+                setIsCategoryModalOpen(false);
+            } else {
+                message.warning("Category already exists!");
+            }
+        });
+    };
+
+    const handleViewDocument = (document) => {
+        setSelectedDocument(document);
+        setIsViewModalOpen(true);
+    };
+
+    const handleDownload = (document) => {
+        message.success(`Downloading ${document.name}...`);
+        // In real implementation, this would download the file
+        // const link = document.createElement('a');
+        // link.href = document.url;
+        // link.download = document.name;
+        // link.click();
     };
 
     const uploadProps = {
@@ -96,9 +135,14 @@ export const DocumentList = () => {
         {
             title: "Actions",
             key: "actions",
-            render: () => (
+            render: (_, record) => (
                 <Space>
-                    <Button type="text" icon={<DownloadOutlined />} />
+                    <Button type="primary" ghost icon={<DownloadOutlined />} onClick={() => handleViewDocument(record)}>
+                        View
+                    </Button>
+                    <Button type="primary" icon={<DownloadOutlined />} onClick={() => handleDownload(record)}>
+                        Download
+                    </Button>
                     <Button type="text" danger icon={<DeleteOutlined />} />
                 </Space>
             ),
@@ -180,12 +224,27 @@ export const DocumentList = () => {
                         name="category"
                         rules={[{ required: true, message: "Please select category" }]}
                     >
-                        <Select placeholder="Select category" size="large">
-                            <Select.Option value="finance">Finance</Select.Option>
-                            <Select.Option value="planning">Planning</Select.Option>
-                            <Select.Option value="statistics">Statistics</Select.Option>
-                            <Select.Option value="legal">Legal</Select.Option>
-                            <Select.Option value="other">Other</Select.Option>
+                        <Select
+                            placeholder="Select category"
+                            size="large"
+                            dropdownRender={(menu) => (
+                                <>
+                                    {menu}
+                                    <div style={{ padding: '8px', borderTop: '1px solid #f0f0f0' }}>
+                                        <Button
+                                            type="link"
+                                            onClick={() => setIsCategoryModalOpen(true)}
+                                            style={{ width: '100%' }}
+                                        >
+                                            + Add New Category
+                                        </Button>
+                                    </div>
+                                </>
+                            )}
+                        >
+                            {categories.map(cat => (
+                                <Select.Option key={cat} value={cat}>{cat}</Select.Option>
+                            ))}
                         </Select>
                     </Form.Item>
 
@@ -209,6 +268,82 @@ export const DocumentList = () => {
                         <Input.TextArea rows={3} placeholder="Enter document description (optional)" />
                     </Form.Item>
                 </Form>
+            </Modal>
+
+            {/* Add Category Modal */}
+            <Modal
+                title="Add New Category"
+                open={isCategoryModalOpen}
+                onOk={handleAddCategory}
+                onCancel={() => {
+                    categoryForm.resetFields();
+                    setIsCategoryModalOpen(false);
+                }}
+                okText="Add"
+                cancelText="Cancel"
+            >
+                <Form form={categoryForm} layout="vertical" style={{ marginTop: 24 }}>
+                    <Form.Item
+                        label="Category Name"
+                        name="category"
+                        rules={[{ required: true, message: "Please enter category name" }]}
+                    >
+                        <Input placeholder="Enter category name" size="large" />
+                    </Form.Item>
+                </Form>
+            </Modal>
+
+            {/* View Document Modal */}
+            <Modal
+                title="Document Preview"
+                open={isViewModalOpen}
+                onCancel={() => setIsViewModalOpen(false)}
+                footer={[
+                    <Button key="download" type="primary" icon={<DownloadOutlined />} onClick={() => handleDownload(selectedDocument)}>
+                        Download
+                    </Button>,
+                    <Button key="close" onClick={() => setIsViewModalOpen(false)}>
+                        Close
+                    </Button>
+                ]}
+                width={800}
+            >
+                {selectedDocument && (
+                    <div>
+                        <Space direction="vertical" style={{ width: "100%", marginBottom: 16 }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                                {getFileIcon(selectedDocument.type)}
+                                <div>
+                                    <div style={{ fontSize: 16, fontWeight: 600 }}>{selectedDocument.name}</div>
+                                    <div style={{ fontSize: 13, color: "#6b7280" }}>
+                                        {selectedDocument.size} • {selectedDocument.category}
+                                    </div>
+                                </div>
+                            </div>
+                            <div style={{ fontSize: 13, color: "#6b7280" }}>
+                                Uploaded by {selectedDocument.uploadedBy} on {selectedDocument.uploaded}
+                            </div>
+                        </Space>
+                        <div style={{
+                            border: "1px solid #e5e7eb",
+                            borderRadius: 8,
+                            padding: 24,
+                            background: "#f9fafb",
+                            minHeight: 400,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center"
+                        }}>
+                            <div style={{ textAlign: "center", color: "#6b7280" }}>
+                                <FileTextOutlined style={{ fontSize: 64, marginBottom: 16 }} />
+                                <div>Document preview will be displayed here</div>
+                                <div style={{ fontSize: 12, marginTop: 8 }}>
+                                    Click Download to get the full document
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </Modal>
         </div>
     );

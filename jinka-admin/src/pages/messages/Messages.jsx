@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-import { List, Avatar, Badge, Card, Input, Button, Space, Modal, Typography } from "antd";
+import { List, Avatar, Badge, Card, Input, Modal, Typography } from "antd";
 import {
     UserOutlined,
     SearchOutlined,
-    SendOutlined,
     CloseOutlined,
 } from "@ant-design/icons";
 
-const { TextArea } = Input;
 const { Text, Title } = Typography;
 
 export const MessageList = () => {
@@ -153,18 +151,6 @@ export const MessageList = () => {
 
                         <div style={{ marginBottom: 24, whiteSpace: "pre-wrap", lineHeight: 1.6 }}>
                             {selectedMessage.fullMessage}
-                        </div>
-
-                        <div style={{ borderTop: "1px solid #f0f0f0", paddingTop: 16 }}>
-                            <Text strong style={{ display: "block", marginBottom: 8 }}>Reply:</Text>
-                            <TextArea
-                                rows={4}
-                                placeholder="Type your reply here..."
-                                style={{ marginBottom: 12 }}
-                            />
-                            <Button type="primary" icon={<SendOutlined />}>
-                                Send Reply
-                            </Button>
                         </div>
                     </div>
                 )}

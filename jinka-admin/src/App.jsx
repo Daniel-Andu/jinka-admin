@@ -10,7 +10,6 @@ import { ConfigProvider, App as AntdApp } from "antd";
 
 import { ThemedLayoutV2 } from "./components/layout";
 import { Dashboard } from "./pages/dashboard";
-import { CitizenList, CitizenCreate, CitizenEdit, CitizenShow } from "./pages/citizens";
 import { DepartmentList, DepartmentCreate, DepartmentEdit } from "./pages/departments";
 import { AnnouncementList, AnnouncementCreate, AnnouncementEdit } from "./pages/announcements";
 import { ProjectList } from "./pages/projects";
@@ -49,16 +48,6 @@ function App() {
                                     meta: {
                                         label: "Dashboard",
                                         icon: "📊",
-                                    },
-                                },
-                                {
-                                    name: "citizens",
-                                    list: "/citizens",
-                                    create: "/citizens/create",
-                                    edit: "/citizens/edit/:id",
-                                    show: "/citizens/show/:id",
-                                    meta: {
-                                        label: "Citizens",
                                     },
                                 },
                                 {
@@ -137,12 +126,6 @@ function App() {
                                     }
                                 >
                                     <Route index element={<Dashboard />} />
-                                    <Route path="/citizens">
-                                        <Route index element={<CitizenList />} />
-                                        <Route path="create" element={<CitizenCreate />} />
-                                        <Route path="edit/:id" element={<CitizenEdit />} />
-                                        <Route path="show/:id" element={<CitizenShow />} />
-                                    </Route>
                                     <Route path="/departments">
                                         <Route index element={<DepartmentList />} />
                                         <Route path="create" element={<DepartmentCreate />} />
