@@ -1,0 +1,119 @@
+{
+    "app": {
+        "title": "Jinka City",
+        "subtitle": "Administration"
+    },
+    "menu": {
+        "dashboard": "Dashboard",
+        "departments": "Departments",
+        "citizens": "Citizens",
+        "announcements": "Announcements",
+        "projects": "Projects",
+        "events": "Events",
+        "documents": "Documents",
+        "reports": "Reports",
+        "messages": "Messages",
+        "settings": "Settings"
+    },
+    "header": {
+        "search": "Search anything...",
+        "notifications": "Notifications",
+        "profile": "Admin",
+        "user": "User"
+    },
+    "dashboard": {
+        "title": "Dashboard Overview",
+        "welcome": "Welcome back, here's what's happening in Jinka City Administration",
+        "totalCitizens": "Total Citizens",
+        "activeDepartments": "Active Departments",
+        "pendingRequests": "Pending Requests",
+        "monthlyRevenue": "Monthly Revenue",
+        "recentActivities": "Recent Activities",
+        "quickStats": "Quick Stats",
+        "systemStatus": "System Status"
+    },
+    "citizens": {
+        "title": "Citizens Management",
+        "add": "Add Citizen",
+        "search": "Search citizens...",
+        "id": "Citizen ID",
+        "name": "Name",
+        "phone": "Phone",
+        "email": "Email",
+        "department": "Department",
+        "status": "Status",
+        "actions": "Actions"
+    },
+    "departments": {
+        "title": "Departments",
+        "add": "Add Department",
+        "search": "Search departments...",
+        "name": "Department",
+        "head": "Head",
+        "employees": "Employees",
+        "contact": "Contact",
+        "status": "Status",
+        "actions": "Actions"
+    },
+    "announcements": {
+        "title": "Announcements",
+        "create": "Create Announcement",
+        "search": "Search announcements...",
+        "titleField": "Title",
+        "category": "Category",
+        "date": "Date",
+        "status": "Status",
+        "actions": "Actions"
+    },
+    "projects": {
+        "title": "Projects",
+        "new": "New Project",
+        "budget": "Budget",
+        "deadline": "Deadline",
+        "progress": "Progress"
+    },
+    "events": {
+        "title": "Events Calendar",
+        "add": "Add Event"
+    },
+    "documents": {
+        "title": "Documents",
+        "upload": "Upload Document",
+        "search": "Search documents...",
+        "name": "Document",
+        "category": "Category",
+        "size": "Size",
+        "uploaded": "Uploaded",
+        "uploadedBy": "Uploaded By",
+        "actions": "Actions"
+    },
+    "reports": {
+        "title": "Reports & Analytics",
+        "export": "Export",
+        "print": "Print"
+    },
+    "messages": {
+        "title": "Messages",
+        "search": "Search messages..."
+    },
+    "settings": {
+        "title": "Settings",
+        "profile": "Profile Settings",
+        "security": "Security Settings",
+        "notifications": "Notification Settings",
+        "system": "System Settings"
+    },
+    "common": {
+        "save": "Save",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "edit": "Edit",
+        "view": "View",
+        "create": "Create",
+        "update": "Update",
+        "close": "Close",
+        "submit": "Submit",
+        "loading": "Loading...",
+        "noData": "No data available"
+    }
+}

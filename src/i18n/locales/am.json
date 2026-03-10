@@ -1,0 +1,119 @@
+{
+    "app": {
+        "title": "ጅንካ ከተማ",
+        "subtitle": "አስተዳደር"
+    },
+    "menu": {
+        "dashboard": "ዳሽቦርድ",
+        "departments": "ክፍሎች",
+        "citizens": "ዜጎች",
+        "announcements": "ማስታወቂያዎች",
+        "projects": "ፕሮጀክቶች",
+        "events": "ዝግጅቶች",
+        "documents": "ሰነዶች",
+        "reports": "ሪፖርቶች",
+        "messages": "መልዕክቶች",
+        "settings": "ቅንብሮች"
+    },
+    "header": {
+        "search": "ፈልግ...",
+        "notifications": "ማሳወቂያዎች",
+        "profile": "አስተዳዳሪ",
+        "user": "ተጠቃሚ"
+    },
+    "dashboard": {
+        "title": "ዳሽቦርድ አጠቃላይ እይታ",
+        "welcome": "እንኳን ደህና መጡ፣ በጅንካ ከተማ አስተዳደር ውስጥ የሚከሰቱት ነገሮች እነሆ",
+        "totalCitizens": "ጠቅላላ ዜጎች",
+        "activeDepartments": "ንቁ ክፍሎች",
+        "pendingRequests": "በመጠባበቅ ላይ ያሉ ጥያቄዎች",
+        "monthlyRevenue": "ወርሃዊ ገቢ",
+        "recentActivities": "የቅርብ ጊዜ እንቅስቃሴዎች",
+        "quickStats": "ፈጣን ስታቲስቲክስ",
+        "systemStatus": "የስርዓት ሁኔታ"
+    },
+    "citizens": {
+        "title": "የዜጎች አስተዳደር",
+        "add": "ዜጋ ጨምር",
+        "search": "ዜጎችን ፈልግ...",
+        "id": "የዜጋ መታወቂያ",
+        "name": "ስም",
+        "phone": "ስልክ",
+        "email": "ኢሜይል",
+        "department": "ክፍል",
+        "status": "ሁኔታ",
+        "actions": "ድርጊቶች"
+    },
+    "departments": {
+        "title": "ክፍሎች",
+        "add": "ክፍል ጨምር",
+        "search": "ክፍሎችን ፈልግ...",
+        "name": "ክፍል",
+        "head": "ኃላፊ",
+        "employees": "ሰራተኞች",
+        "contact": "ግንኙነት",
+        "status": "ሁኔታ",
+        "actions": "ድርጊቶች"
+    },
+    "announcements": {
+        "title": "ማስታወቂያዎች",
+        "create": "ማስታወቂያ ፍጠር",
+        "search": "ማስታወቂያዎችን ፈልግ...",
+        "titleField": "ርዕስ",
+        "category": "ምድብ",
+        "date": "ቀን",
+        "status": "ሁኔታ",
+        "actions": "ድርጊቶች"
+    },
+    "projects": {
+        "title": "ፕሮጀክቶች",
+        "new": "አዲስ ፕሮጀክት",
+        "budget": "በጀት",
+        "deadline": "የመጨረሻ ቀን",
+        "progress": "እድገት"
+    },
+    "events": {
+        "title": "የዝግጅቶች ቀን መቁጠሪያ",
+        "add": "ዝግጅት ጨምር"
+    },
+    "documents": {
+        "title": "ሰነዶች",
+        "upload": "ሰነድ ስቀል",
+        "search": "ሰነዶችን ፈልግ...",
+        "name": "ሰነድ",
+        "category": "ምድብ",
+        "size": "መጠን",
+        "uploaded": "የተሰቀለ",
+        "uploadedBy": "ያሰቀለው",
+        "actions": "ድርጊቶች"
+    },
+    "reports": {
+        "title": "ሪፖርቶች እና ትንተና",
+        "export": "ወደ ውጭ ላክ",
+        "print": "አትም"
+    },
+    "messages": {
+        "title": "መልዕክቶች",
+        "search": "መልዕክቶችን ፈልግ..."
+    },
+    "settings": {
+        "title": "ቅንብሮች",
+        "profile": "የመገለጫ ቅንብሮች",
+        "security": "የደህንነት ቅንብሮች",
+        "notifications": "የማሳወቂያ ቅንብሮች",
+        "system": "የስርዓት ቅንብሮች"
+    },
+    "common": {
+        "save": "አስቀምጥ",
+        "cancel": "ሰርዝ",
+        "delete": "ሰርዝ",
+        "edit": "አርትዕ",
+        "view": "ይመልከቱ",
+        "create": "ፍጠር",
+        "update": "አዘምን",
+        "close": "ዝጋ",
+        "submit": "አስገባ",
+        "loading": "በመጫን ላይ...",
+        "noData": "ምንም መረጃ የለም"
+    }
+}
