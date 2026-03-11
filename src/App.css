@@ -1,5 +1,5 @@
 .dashboard-header {
-    background: linear-gradient(135deg, #1e5a8e 0%, #0d9488 100%);
+    background: linear-gradient(135deg, #2E8B57 0%, #3CB371 100%);
     padding: 32px;
     border-radius: 12px;
     color: white;
@@ -59,11 +59,11 @@
 }
 
 .stat-card-icon.blue {
-    background: #1e5a8e;
+    background: #1E90FF;
 }
 
 .stat-card-icon.green {
-    background: #0d9488;
+    background: #2E8B57;
 }
 
 .stat-card-icon.orange {
@@ -71,7 +71,7 @@
 }
 
 .stat-card-icon.red {
-    background: #dc2626;
+    background: #C21F1F;
 }
 
 .stat-card-title {
@@ -93,11 +93,11 @@
 }
 
 .stat-card-change.positive {
-    color: #0d9488;
+    color: #2E8B57;
 }
 
 .stat-card-change.negative {
-    color: #dc2626;
+    color: #E02F2F;
 }
 
 .stat-card-change.neutral {
@@ -128,12 +128,12 @@
 
 .activity-icon.info {
     background: #dbeafe;
-    color: #1e5a8e;
+    color: #1E90FF;
 }
 
 .activity-icon.success {
     background: #d1fae5;
-    color: #0d9488;
+    color: #2E8B57;
 }
 
 .activity-icon.warning {

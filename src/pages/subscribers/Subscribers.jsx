@@ -1,16 +1,20 @@
 import { useState, useEffect } from "react";
-import { Table, Space, Button, Input, Card, message, Popconfirm } from "antd";
+import { Table, Space, Button, Input, Card, message, Popconfirm, Modal, Form } from "antd";
 import {
     DeleteOutlined,
     SearchOutlined,
     MailOutlined,
+    SendOutlined,
 } from "@ant-design/icons";
-import { subscribersService } from "../../services";
+import { newsletterService, subscribersService } from "../../services";
 
 export const SubscribersList = () => {
     const [searchText, setSearchText] = useState("");
     const [subscribers, setSubscribers] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [sending, setSending] = useState(false);
+    const [newsletterOpen, setNewsletterOpen] = useState(false);
+    const [newsletterForm] = Form.useForm();
 
     const fetchSubscribers = async () => {
         setLoading(true);
@@ -61,7 +65,7 @@ export const SubscribersList = () => {
             key: "email",
             render: (email) => (
                 <Space>
-                    <MailOutlined style={{ color: '#1e5a8e' }} />
+                    <MailOutlined style={{ color: '#2E8B57' }} />
                     <span>{email}</span>
                 </Space>
             ),
@@ -118,6 +122,14 @@ export const SubscribersList = () => {
                         onChange={(e) => setSearchText(e.target.value)}
                         allowClear
                     />
+                    <Button
+                        type="primary"
+                        icon={<SendOutlined />}
+                        onClick={() => setNewsletterOpen(true)}
+                        disabled={loading}
+                    >
+                        Send Newsletter
+                    </Button>
                 </Space>
 
                 {filteredData.length === 0 && !loading ? (
@@ -130,6 +142,7 @@ export const SubscribersList = () => {
                         dataSource={filteredData}
                         rowKey="id"
                         loading={loading}
+                        scroll={{ x: true }}
                         pagination={{
                             pageSize: 10,
                             showTotal: (total) => `Total ${total} subscribers`,
@@ -137,6 +150,65 @@ export const SubscribersList = () => {
                     />
                 )}
             </Card>
+
+            <Modal
+                title="Send Newsletter"
+                open={newsletterOpen}
+                onCancel={() => {
+                    setNewsletterOpen(false);
+                    newsletterForm.resetFields();
+                }}
+                okText="Send"
+                confirmLoading={sending}
+                onOk={async () => {
+                    try {
+                        const values = await newsletterForm.validateFields();
+                        setSending(true);
+                        const resp = await newsletterService.send({
+                            subject: values.subject,
+                            message: values.message,
+                            testEmail: values.testEmail || undefined,
+                        });
+                        const sent = resp?.sent ?? resp?.data?.sent;
+                        message.success(`Newsletter sent${sent ? ` (${sent} recipients)` : ""}`);
+                        setNewsletterOpen(false);
+                        newsletterForm.resetFields();
+                    } catch (err) {
+                        if (err?.errorFields) return;
+                        const msg = err?.response?.data?.error || err?.message || "Failed to send newsletter";
+                        message.error(msg);
+                    } finally {
+                        setSending(false);
+                    }
+                }}
+                width={720}
+            >
+                <Form form={newsletterForm} layout="vertical">
+                    <Form.Item
+                        label="Subject"
+                        name="subject"
+                        rules={[{ required: true, message: "Please enter an email subject" }]}
+                    >
+                        <Input placeholder="Newsletter subject" />
+                    </Form.Item>
+                    <Form.Item
+                        label="Message"
+                        name="message"
+                        rules={[{ required: true, message: "Please enter a message" }]}
+                    >
+                        <Input.TextArea rows={6} placeholder="Write your newsletter message..." />
+                    </Form.Item>
+                    <Form.Item
+                        label="Send test email (optional)"
+                        name="testEmail"
+                        rules={[
+                            { type: "email", message: "Please enter a valid email address" },
+                        ]}
+                    >
+                        <Input placeholder="example@gmail.com (sends only to this email)" />
+                    </Form.Item>
+                </Form>
+            </Modal>
         </div>
     );
 };

@@ -144,7 +144,7 @@ export const Dashboard = () => {
                             </Space>
                         }
                         extra={
-                            <a href="#" style={{ color: "#1e5a8e" }}>
+                            <a href="#" style={{ color: "#2E8B57" }}>
                                 View All
                             </a>
                         }

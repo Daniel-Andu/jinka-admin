@@ -13,7 +13,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, #1e5a8e 0%, #0d9488 100%);
+    background: linear-gradient(135deg, #2E8B57 0%, #3CB371 100%);
     z-index: 0;
 }
 
@@ -54,13 +54,13 @@
 .login-logo-icon {
     width: 80px;
     height: 80px;
-    background: linear-gradient(135deg, #1e5a8e 0%, #0d9488 100%);
+    background: linear-gradient(135deg, #2E8B57 0%, #3CB371 100%);
     border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto;
-    box-shadow: 0 8px 24px rgba(30, 90, 142, 0.3);
+    box-shadow: 0 8px 24px rgba(46, 139, 87, 0.28);
 }
 
 .login-footer {

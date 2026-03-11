@@ -14,4 +14,5 @@ export { cityStatsService } from './cityStats';
 export { servicesService } from './services';
 export { languagesService } from './languages';
 export { subscribersService } from './subscribers';
+export { newsletterService } from './newsletter';
 export { default as api, API_URL } from './api';

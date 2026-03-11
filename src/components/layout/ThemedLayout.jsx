@@ -21,6 +21,7 @@ import {
 } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
+import { authService } from "../../services";
 import "./style.css";
 
 const { Header, Sider, Content } = Layout;
@@ -220,7 +221,7 @@ export const ThemedLayoutV2 = ({ children }) => {
 
     const handleUserMenuClick = ({ key }) => {
         if (key === "logout") {
-            navigate("/login");
+            authService.logout();
         } else if (key === "settings") {
             navigate("/settings");
         }
@@ -257,7 +258,7 @@ export const ThemedLayoutV2 = ({ children }) => {
                 <Menu
                     theme="dark"
                     mode="inline"
-                    selectedKeys={[location.pathname]}
+                    selectedKeys={[`/${(location.pathname.split("/")[1] || "").trim()}`.replace("//", "/")]}
                     items={menuItems}
                     onClick={handleMenuClick}
                     className="custom-menu"

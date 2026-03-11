@@ -1,15 +1,33 @@
 import { useState, useEffect } from "react";
-import { Table, Space, Button, Tag, Input, Card, message, Modal, Form, Switch } from "antd";
+import { Table, Space, Button, Tag, Input, Card, message, Modal, Form, Switch, Upload, Image } from "antd";
 import {
     EditOutlined,
     DeleteOutlined,
     SearchOutlined,
     PlusOutlined,
     ExclamationCircleOutlined,
+    UploadOutlined,
 } from "@ant-design/icons";
-import { servicesService } from "../../services";
+import { servicesService, uploadService, API_URL } from "../../services";
 
 const { confirm } = Modal;
+
+const toSlug = (value = "") =>
+    value
+        .toString()
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, "")
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-");
+
+const toAbsoluteUploadUrl = (filePath = "") => {
+    if (!filePath) return "";
+    if (/^https?:\/\//i.test(filePath)) return filePath;
+    const base = (API_URL || "").replace(/\/api\/?$/, "");
+    const normalized = filePath.startsWith("/") ? filePath : `/${filePath}`;
+    return `${base}${normalized}`;
+};
 
 export const CityServicesList = () => {
     const [searchText, setSearchText] = useState("");
@@ -17,6 +35,7 @@ export const CityServicesList = () => {
     const [loading, setLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingService, setEditingService] = useState(null);
+    const [uploadingIcon, setUploadingIcon] = useState(false);
     const [form] = Form.useForm();
 
     const fetchServices = async () => {
@@ -69,11 +88,36 @@ export const CityServicesList = () => {
         setIsModalOpen(true);
     };
 
+    const handleIconUpload = async (file) => {
+        try {
+            setUploadingIcon(true);
+            const response = await uploadService.upload(file, "service-icons");
+            const filePath = response?.filePath || response?.data?.filePath;
+            if (!filePath) {
+                message.error("Upload failed: no file path returned");
+                return false;
+            }
+            const absoluteUrl = toAbsoluteUploadUrl(filePath);
+            form.setFieldsValue({ icon: absoluteUrl });
+            message.success("Icon uploaded");
+        } catch (error) {
+            console.error("Icon upload error:", error);
+            message.error("Failed to upload icon");
+        } finally {
+            setUploadingIcon(false);
+        }
+        return false;
+    };
+
     const handleSubmit = async (values) => {
         try {
+            const title = values.title || "";
+            const link = values.link?.trim() ? values.link.trim() : `/services/${toSlug(title)}`;
+
             // Convert boolean to number for MySQL
             const data = {
                 ...values,
+                link,
                 is_active: values.is_active ? 1 : 0
             };
 
@@ -109,6 +153,24 @@ export const CityServicesList = () => {
             title: "Icon",
             dataIndex: "icon",
             key: "icon",
+            render: (icon) => {
+                if (!icon) return "-";
+                if (/^https?:\/\//i.test(icon) || icon.startsWith("/uploads") || icon.startsWith("uploads/")) {
+                    const src = toAbsoluteUploadUrl(icon);
+                    return (
+                        <Image
+                            src={src}
+                            width={36}
+                            height={36}
+                            style={{ borderRadius: 8, objectFit: "cover" }}
+                            alt="icon"
+                            preview={{ mask: "View" }}
+                            fallback="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Crect width='100%25' height='100%25' fill='%23f3f4f6'/%3E%3C/svg%3E"
+                        />
+                    );
+                }
+                return icon;
+            },
         },
         {
             title: "Link",
@@ -185,6 +247,7 @@ export const CityServicesList = () => {
                     dataSource={filteredData}
                     rowKey="id"
                     loading={loading}
+                    scroll={{ x: true }}
                     pagination={{
                         pageSize: 10,
                         showTotal: (total) => `Total ${total} services`,
@@ -226,16 +289,37 @@ export const CityServicesList = () => {
 
                     <Form.Item
                         name="icon"
-                        label="Icon"
+                        label="Icon / Image"
                     >
-                        <Input placeholder="Icon name (e.g., FileTextOutlined)" />
+                        <Space direction="vertical" style={{ width: "100%" }}>
+                            <Upload
+                                accept="image/*"
+                                showUploadList={false}
+                                beforeUpload={handleIconUpload}
+                            >
+                                <Button icon={<UploadOutlined />} loading={uploadingIcon} style={{ width: "100%" }}>
+                                    Upload Icon
+                                </Button>
+                            </Upload>
+                            <Form.Item noStyle shouldUpdate={(prev, next) => prev.icon !== next.icon}>
+                                {({ getFieldValue }) => {
+                                    const value = getFieldValue("icon");
+                                    return value ? (
+                                        <Image
+                                            src={value}
+                                            alt="Service icon preview"
+                                            style={{ maxWidth: 140, borderRadius: 10 }}
+                                            fallback="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='80'%3E%3Crect width='100%25' height='100%25' fill='%23f3f4f6'/%3E%3C/svg%3E"
+                                        />
+                                    ) : null;
+                                }}
+                            </Form.Item>
+                            <Input placeholder="Or paste icon/image URL (optional)" />
+                        </Space>
                     </Form.Item>
 
-                    <Form.Item
-                        name="link"
-                        label="Link"
-                    >
-                        <Input placeholder="/services/birth-certificate" />
+                    <Form.Item name="link" label="Link (optional)">
+                        <Input placeholder="Leave empty to auto-generate from title" />
                     </Form.Item>
 
                     <Form.Item

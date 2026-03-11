@@ -16,7 +16,7 @@
 .logo-icon {
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #1e5a8e 0%, #0d9488 100%);
+    background: linear-gradient(135deg, #2E8B57 0%, #3CB371 100%);
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -63,10 +63,10 @@
 }
 
 .custom-menu .ant-menu-item-selected {
-    background: linear-gradient(135deg, #1e5a8e 0%, #0d9488 100%) !important;
+    background: linear-gradient(135deg, #2E8B57 0%, #3CB371 100%) !important;
     color: white !important;
     font-weight: 600;
-    box-shadow: 0 2px 8px rgba(30, 90, 142, 0.3);
+    box-shadow: 0 2px 8px rgba(46, 139, 87, 0.25);
 }
 
 .custom-menu .ant-menu-item .anticon {
@@ -159,7 +159,7 @@
 .header-title {
     font-size: 16px;
     font-weight: 700;
-    background: linear-gradient(135deg, #1e5a8e 0%, #0d9488 100%);
+    background: linear-gradient(135deg, #2E8B57 0%, #3CB371 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -184,7 +184,7 @@
 
 .trigger-btn:hover {
     background: #f3f4f6 !important;
-    color: #1e5a8e !important;
+    color: #2E8B57 !important;
 }
 
 .header-contact {
@@ -197,7 +197,7 @@
 }
 
 .header-contact .anticon {
-    color: #1e5a8e;
+    color: #2E8B57;
     font-size: 16px;
 }
 
@@ -221,8 +221,8 @@
 
 .header-search:focus,
 .header-search:focus-within {
-    border-color: #1e5a8e;
-    box-shadow: 0 0 0 3px rgba(30, 90, 142, 0.1);
+    border-color: #2E8B57;
+    box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.12);
 }
 
 .header-btn {
@@ -238,8 +238,8 @@
 
 .header-btn:hover {
     background: #f3f4f6 !important;
-    color: #1e5a8e !important;
-    border-color: #1e5a8e;
+    color: #2E8B57 !important;
+    border-color: #2E8B57;
 }
 
 .language-btn {
@@ -259,8 +259,8 @@
 
 .language-btn:hover {
     background: #f3f4f6 !important;
-    color: #1e5a8e !important;
-    border-color: #1e5a8e;
+    color: #2E8B57 !important;
+    border-color: #2E8B57;
 }
 
 .language-btn .anticon {
@@ -289,7 +289,16 @@
 
 .user-dropdown:hover {
     background: #f3f4f6;
-    border-color: #1e5a8e;
+    border-color: #2E8B57;
+}
+
+@media (max-width: 576px) {
+    .header-right {
+        gap: 10px;
+    }
+    .language-btn {
+        padding: 0 12px;
+    }
 }
 
 .user-dropdown-info {

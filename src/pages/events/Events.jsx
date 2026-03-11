@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Calendar, Card, Badge, Button, Modal, Form, Input, DatePicker, Select, message, Upload, Image, Descriptions } from "antd";
+import React, { useMemo, useState } from "react";
+import { Calendar, Card, Badge, Button, Modal, Form, Input, DatePicker, Select, message, Upload, Image, Descriptions, Space, Typography } from "antd";
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 
@@ -109,6 +109,25 @@ export const EventList = () => {
         setSelectedEvent(event);
         setIsDetailModalOpen(true);
     };
+
+    const detailModalTitle = useMemo(() => {
+        if (!selectedEvent) return "Event Details";
+        return (
+            <Space align="center" size={12}>
+                <Image
+                    src={selectedEvent.image}
+                    width={28}
+                    height={28}
+                    style={{ borderRadius: 6, objectFit: "cover" }}
+                    preview={false}
+                    fallback="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Crect width='100%25' height='100%25' fill='%23f3f4f6'/%3E%3C/svg%3E"
+                />
+                <Typography.Text strong style={{ fontSize: 16 }}>
+                    {selectedEvent.title}
+                </Typography.Text>
+            </Space>
+        );
+    }, [selectedEvent]);
 
     const dateCellRender = (value) => {
         const dayEvents = events.filter(event =>
@@ -224,7 +243,7 @@ export const EventList = () => {
 
             {/* Event Detail Modal */}
             <Modal
-                title="Event Details"
+                title={detailModalTitle}
                 open={isDetailModalOpen}
                 onCancel={() => setIsDetailModalOpen(false)}
                 footer={[
@@ -236,17 +255,15 @@ export const EventList = () => {
             >
                 {selectedEvent && (
                     <div>
-                        {selectedEvent.image && (
+                        {selectedEvent.image ? (
                             <Image
                                 src={selectedEvent.image}
                                 alt={selectedEvent.title}
-                                style={{ width: "100%", borderRadius: 8, marginBottom: 24 }}
+                                style={{ width: "100%", borderRadius: 10, marginBottom: 20, objectFit: "cover", maxHeight: 280 }}
+                                fallback="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='280'%3E%3Crect width='100%25' height='100%25' fill='%23f3f4f6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%239ca3af' font-family='Arial' font-size='18'%3EImage not available%3C/text%3E%3C/svg%3E"
                             />
-                        )}
+                        ) : null}
                         <Descriptions bordered column={1}>
-                            <Descriptions.Item label="Event Title">
-                                <strong style={{ fontSize: 16 }}>{selectedEvent.title}</strong>
-                            </Descriptions.Item>
                             <Descriptions.Item label="Date">
                                 {dayjs(selectedEvent.date).format("MMMM D, YYYY")}
                             </Descriptions.Item>
